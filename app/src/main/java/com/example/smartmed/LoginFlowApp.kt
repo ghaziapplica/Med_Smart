@@ -11,3 +11,7 @@ class LoginFlowApp : Application()  {
         FirebaseApp.initializeApp(this)
     }
 }
+
+fun addNow(){
+
+}
