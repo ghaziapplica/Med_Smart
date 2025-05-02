@@ -1,15 +1,28 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
 }
+val localProperties = Properties().apply {
+    load(FileInputStream(rootProject.file("local.properties")))
+}
+
+val openAiApiKey = (localProperties["OPENAI_API_KEY"] as? String)
+    ?: throw GradleException("OPENAI_API_KEY not found in local.properties")
+
+
 
 android {
     namespace = "com.example.smartmed"
     compileSdk = 35
 
     defaultConfig {
+        buildConfigField("String", "OPENAI_API_KEY", "\"$openAiApiKey\"")
         applicationId = "com.example.smartmed"
         minSdk = 24
         targetSdk = 35
@@ -65,4 +78,16 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
     implementation("com.google.firebase:firebase-auth")
 //    implementation (libs.lifecycle)
+
+
+    // Retrofit for networking
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+// Coroutines for background threading
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+
+
 }

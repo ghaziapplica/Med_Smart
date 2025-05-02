@@ -20,11 +20,9 @@ sealed class MainRouteScreen(val route: String){
 
     object ChatScreen : MainRouteScreen("chatScreen")
     object HeartScreen : MainRouteScreen("heartScreen")
+    object AiScreen : MainRouteScreen("aiScreen")
     object MyProfileScreen : MainRouteScreen("profileScreen")
     object HomeScreen : MainRouteScreen("homeScreen")
-
-
-
 
 
 }

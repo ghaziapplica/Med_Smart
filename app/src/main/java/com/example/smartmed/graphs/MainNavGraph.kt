@@ -7,9 +7,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.smartmed.Graph
 import com.example.smartmed.MainRouteScreen
-import com.example.smartmed.homeScreen.ChatScreen
+import com.example.smartmed.bottomBarScreens.HomeScreen
+import com.example.smartmed.chatBot.ChatRepository
+import com.example.smartmed.chatBot.ChatScreen
+import com.example.smartmed.chatBot.ChatViewModel
+import com.example.smartmed.homeScreen.ChatHistoryScreen
 import com.example.smartmed.homeScreen.FavoriteScreen
-import com.example.smartmed.homeScreen.HomeScreen
 import com.example.smartmed.homeScreen.MyProfileScreen
 
 
@@ -28,13 +31,19 @@ fun MainNavGraph(
             HomeScreen(innerPadding = innerPadding)
         }
         composable(route = MainRouteScreen.ChatScreen.route) {
-            ChatScreen(innerPadding = innerPadding)
+            ChatHistoryScreen(innerPadding = innerPadding)
         }
         composable(route = MainRouteScreen.HeartScreen .route) {
             FavoriteScreen(innerPadding = innerPadding)
         }
         composable(route = MainRouteScreen.MyProfileScreen .route) {
             MyProfileScreen(innerPadding = innerPadding)
+        }
+        composable(route = MainRouteScreen.AiScreen .route) {
+            ChatScreen(
+                viewModel = ChatViewModel(ChatRepository("YOUR_API_KEY")),
+                innerPadding = innerPadding
+            )
         }
     }
 }

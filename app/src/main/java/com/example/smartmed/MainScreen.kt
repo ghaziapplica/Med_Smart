@@ -1,6 +1,7 @@
 package com.example.smartmed
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -8,8 +9,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -37,13 +41,17 @@ fun BottomBar(navController: NavHostController) {
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.Chat,
+        BottomBarScreen.Ai,
         BottomBarScreen.Heart,
         BottomBarScreen.Profile
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationBar {
+    NavigationBar(
+        containerColor = Color.White, // Custom blue or any color
+        tonalElevation = 10.dp
+    ) {
         screens.forEach { screen ->
             AddItem(screen = screen,
                 currentDestination = currentDestination,
@@ -66,7 +74,8 @@ fun RowScope.AddItem(
         icon = {
             Icon(
                 painter = painterResource(id = if (isSelected) screen.selectedIcon else screen.icons), // Show selected icon if active
-                contentDescription = "navigation"
+                contentDescription = "navigation",
+                modifier = Modifier.size(100.dp)
             )
         },
         selected = isSelected,

@@ -16,9 +16,14 @@ sealed class BottomBarScreen (
         )
     data object Chat : BottomBarScreen(
         route = MainRouteScreen.ChatScreen.route,
-        label = "Chat",
-        icons = R.drawable.chat,
-        selectedIcon = R.drawable.chatfill
+        label = "History",
+        icons = R.drawable.history,
+        selectedIcon = R.drawable.historyclicked)
+    data object Ai : BottomBarScreen(
+        route = MainRouteScreen.AiScreen.route,
+        label = "",
+        icons = R.drawable.ai,
+        selectedIcon = R.drawable.ai,
     )
     data object Heart : BottomBarScreen(
         route = MainRouteScreen.HeartScreen.route,
@@ -32,4 +37,5 @@ sealed class BottomBarScreen (
         icons = R.drawable.profile,
         selectedIcon = R.drawable.profilefilled,
     )
+
 }

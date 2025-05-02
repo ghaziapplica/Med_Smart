@@ -17,7 +17,7 @@ import com.example.smartmed.ui.theme.poppinsFamilyFont
 
 
 @Composable
-fun ChatScreen(innerPadding: PaddingValues) {
+fun ChatHistoryScreen(innerPadding: PaddingValues) {
     Box (
         modifier = Modifier
             .fillMaxSize()
@@ -38,7 +38,7 @@ fun ChatScreen(innerPadding: PaddingValues) {
 @Preview
 @Composable
 fun ChatScreenPreview() {
-    ChatScreen(
+    ChatHistoryScreen(
         innerPadding = PaddingValues()
     )
 }

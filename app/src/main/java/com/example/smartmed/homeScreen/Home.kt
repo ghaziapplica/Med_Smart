@@ -17,7 +17,7 @@ import com.example.smartmed.ui.theme.poppinsFamilyFont
 
 
 @Composable
-fun HomeScreen(innerPadding: PaddingValues) {
+fun Home(innerPadding: PaddingValues) {
 Box (
     modifier = Modifier
         .fillMaxSize()
@@ -38,7 +38,7 @@ Box (
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(
+    Home(
         innerPadding = PaddingValues()
     )
 }
