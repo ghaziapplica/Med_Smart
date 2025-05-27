@@ -1,8 +1,11 @@
 package com.example.smartmed.authScreen
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Build
 import android.widget.DatePicker
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +29,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,20 +56,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.smartmed.AuthRouteScreen
 import com.example.smartmed.Graph
+import com.example.smartmed.ProfileSharedViewModel
 import com.example.smartmed.R
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ProfileScreen(navController: NavController) {
-    var textEmail by remember { mutableStateOf("") }
-    var textOtp by remember { mutableStateOf("") }
+fun ProfileScreen(navController: NavController,
+                  viewModel: ProfileViewModel,
+                  viewSharedModel: ProfileSharedViewModel
+) {
     var isEmailFocused by remember { mutableStateOf(false) }
     var isOtpFocused by remember { mutableStateOf(false) }
     val focusManager: FocusManager = LocalFocusManager.current
+
     var selectedDate by remember { mutableStateOf("") }
+    var fullName by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     val currentDate = LocalDate.now()
@@ -79,6 +89,21 @@ fun ProfileScreen(navController: NavController) {
             selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
         }, year, month, day
     )
+
+    val selectedImageUri by viewSharedModel.profileImageUri.collectAsState()
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            viewSharedModel.setProfileImage(it.toString()) // ✅ update shared state
+        }
+    }
+
+
+
+
+
 
     Column (
         modifier = Modifier
@@ -101,27 +126,33 @@ fun ProfileScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .size(80.dp)
-                .background(Color.Gray, shape = CircleShape) // Background with shape
+                .background(Color.Gray, shape = CircleShape)
+                .clickable { launcher.launch("image/*") }
         ) {
             Image(
-                painter = painterResource(id = R.drawable.profilepic), // Replace with your image
-                contentDescription = "Circular Image with Border",
+                painter = rememberAsyncImagePainter(selectedImageUri ?: R.drawable.profilepic),
+                contentDescription = "Selected Profile Image",
                 modifier = Modifier
-                    .size(80.dp) // Set size
-                    .clip(CircleShape) // Make it circular // Add a 2dp blue border
+                    .size(80.dp)
+                    .clip(CircleShape)
             )
+
             Image(
-                painter = painterResource(id = R.drawable.edit), // Replace with your image
-                contentDescription = "Circular Image with Border",
-                modifier = Modifier.size(25.dp)
+                painter = painterResource(id = R.drawable.edit),
+                contentDescription = "Edit Icon",
+                modifier = Modifier
+                    .size(25.dp)
                     .align(Alignment.BottomEnd)
                     .padding(end = 2.dp, bottom = 2.dp)
             )
         }
+
+
         Spacer(modifier = Modifier.size(50.dp))
 
         Text(
             text = "Full Name",
+
             modifier = Modifier.align(Alignment.Start),
             fontFamily = poppinsFamilyFont,
             color = Color.Black,
@@ -136,7 +167,7 @@ fun ProfileScreen(navController: NavController) {
                 .height(53.dp)
                 .background(Color(0xFFF1F4FF), RoundedCornerShape(8.35.dp))
                 .border(
-                    width = if (isEmailFocused || textEmail.isNotEmpty()) 1.67.dp else (-1).dp, // Show border only when focused or has text
+                    width = if (isEmailFocused || fullName.isNotEmpty()) 1.67.dp else (-1).dp, // Show border only when focused or has text
                     color = Color(0xFF0077B6),
                     shape = RoundedCornerShape(8.35.dp)
                 )
@@ -149,8 +180,8 @@ fun ProfileScreen(navController: NavController) {
                 .onFocusChanged { focusState -> isEmailFocused = focusState.isFocused }
         ) {
             BasicTextField(
-                value = textEmail,
-                onValueChange = { textEmail = it },
+                value = fullName,
+                onValueChange = { fullName = it },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = {
                     focusManager.moveFocus(
@@ -164,7 +195,7 @@ fun ProfileScreen(navController: NavController) {
                 ),
                 modifier = Modifier.fillMaxSize(),
                 decorationBox = { innerTextField ->
-                    if (textEmail.isEmpty() && !isEmailFocused) {
+                    if (fullName.isEmpty() && !isEmailFocused) {
                         Text(
                             text = "Name",
                             style = TextStyle(
@@ -197,7 +228,7 @@ fun ProfileScreen(navController: NavController) {
                 .height(53.dp)
                 .background(Color(0xFFF1F4FF), RoundedCornerShape(8.35.dp))
                 .border(
-                    width = if (isOtpFocused || textOtp.isNotEmpty()) 1.67.dp else (-1).dp, // Show border only when focused or has text
+                    width = if (isOtpFocused || phoneNumber.isNotEmpty()) 1.67.dp else (-1).dp, // Show border only when focused or has text
                     color = Color(0xFF0077B6),
                     shape = RoundedCornerShape(8.35.dp)
                 )
@@ -205,8 +236,8 @@ fun ProfileScreen(navController: NavController) {
                 .onFocusChanged { focusState -> isOtpFocused = focusState.isFocused }
         ) {
             BasicTextField(
-                value = textOtp,
-                onValueChange = { textOtp = it },
+                value = phoneNumber,
+                onValueChange = { phoneNumber = it },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 textStyle = TextStyle(
@@ -216,7 +247,7 @@ fun ProfileScreen(navController: NavController) {
                 ),
                 modifier = Modifier.fillMaxSize(),
                 decorationBox = { innerTextField ->
-                    if (textOtp.isEmpty() && !isOtpFocused) {
+                    if (phoneNumber.isEmpty() && !isOtpFocused) {
                         Text(
                             text = "Number",
                             style = TextStyle(
@@ -251,6 +282,7 @@ fun ProfileScreen(navController: NavController) {
                 .padding(16.dp)
         ) {
             Text(
+
                 text = if (selectedDate.isEmpty()) "DD / MM / YYYY" else selectedDate,
                 style = TextStyle(
                     fontSize = 13.sp,
@@ -262,6 +294,8 @@ fun ProfileScreen(navController: NavController) {
         Spacer(modifier = Modifier.size(44.dp))
         Button(
             onClick = {
+                viewModel.saveUserProfile(fullName, phoneNumber, selectedDate, onSuccess = {}, onFailure = {} )
+
                 navController.navigate(Graph.MainScreenGraph){
                 popUpTo(AuthRouteScreen.ProfileScreen.route){
                     inclusive = true
@@ -332,6 +366,8 @@ fun ProfileScreen(navController: NavController) {
 @Preview
 fun ProfileScreenPreview() {
     ProfileScreen(
-        navController = NavController(LocalContext.current)
+        navController = NavController(LocalContext.current),
+        viewModel = ProfileViewModel(),
+        viewSharedModel = ProfileSharedViewModel()
     )
 }

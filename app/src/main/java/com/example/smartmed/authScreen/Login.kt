@@ -67,7 +67,6 @@ import com.example.smartmed.ui.theme.poppinsFamilyFont
 
 @Composable
 fun LoginScreen(navController: NavController,
-                onTextSelected: (String) -> Unit,
                 loginViewModel: LoginViewModel = viewModel()
 ) {
     var Email by remember { mutableStateOf("") }
@@ -251,7 +250,7 @@ fun ImageButton(imageRes: Int) {
 fun LoginScreenPreview(){
     LoginScreen(
         navController = NavController(LocalContext.current),
-        onTextSelected = {}
+
 
     )
 }

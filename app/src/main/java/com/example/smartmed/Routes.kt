@@ -18,11 +18,28 @@ sealed class AuthRouteScreen(val route: String) {
 }
 sealed class MainRouteScreen(val route: String){
 
-    object ChatScreen : MainRouteScreen("chatScreen")
+    object NoteScreen : MainRouteScreen("noteScreen")
     object HeartScreen : MainRouteScreen("heartScreen")
     object AiScreen : MainRouteScreen("aiScreen")
     object MyProfileScreen : MainRouteScreen("profileScreen")
     object HomeScreen : MainRouteScreen("homeScreen")
+    object FindScreen : MainRouteScreen("findScreen")
+    object NotePopUp : MainRouteScreen("NotePopupScreen")
+    object ProfileScreen : MainRouteScreen("profileScreen")
+    object DoctorRoutes {
+        const val Heart = "cardiologist_screen"
+        const val Skin = "dermatologist_screen"
+        const val Child = "pediatrician_screen"
+        const val Eye = "ophthalmologist_screen"
+        const val Psych = "psychiatrist_screen"
+        const val Ortho = "orthopedic_screen"
+        const val Gyno = "gynecologist_screen"
+        const val Dental = "dentist_screen"
+        const val DoctorList = "doctor_list"
+
+    }
+
+
 
 
 }

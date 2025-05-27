@@ -15,10 +15,10 @@ sealed class BottomBarScreen (
         selectedIcon = R.drawable.homefill,
         )
     data object Chat : BottomBarScreen(
-        route = MainRouteScreen.ChatScreen.route,
-        label = "History",
-        icons = R.drawable.history,
-        selectedIcon = R.drawable.historyclicked)
+        route = MainRouteScreen.FindScreen.route,
+        label = "Find",
+        icons = R.drawable.searchh,
+        selectedIcon = R.drawable.searchclicked)
     data object Ai : BottomBarScreen(
         route = MainRouteScreen.AiScreen.route,
         label = "",
@@ -35,7 +35,7 @@ sealed class BottomBarScreen (
         route = MainRouteScreen.MyProfileScreen.route,
         label = "MyProfile",
         icons = R.drawable.profile,
-        selectedIcon = R.drawable.profilefilled,
+        selectedIcon = R.drawable.profileclicked,
     )
 
 }

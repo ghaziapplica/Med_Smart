@@ -23,4 +23,7 @@
     <string name="menu">Menu</string>
     <string name="navigation_header">App Drawer</string>
     <string name="name">Robin Hood</string>
+
+    <string name="update_wish">Update Wish</string>
+    <string name="add_wish">Add Wish</string>
 </resources>

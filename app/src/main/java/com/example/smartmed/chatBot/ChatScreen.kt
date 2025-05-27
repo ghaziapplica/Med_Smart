@@ -1,5 +1,6 @@
 package com.example.smartmed.chatBot
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -14,18 +15,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.smartmed.AuthRouteScreen
+import com.example.smartmed.MainRouteScreen
 import com.example.smartmed.R
+import com.example.smartmed.components.CustomImageButton
+import com.example.smartmed.graphs.RootNavGraph
+import com.example.smartmed.ui.theme.poppinsFamilyFont
 
 @Composable
 fun ChatScreen(viewModel: ChatViewModel,
-               innerPadding: PaddingValues) {
+               innerPadding: PaddingValues,
+               navController: NavHostController = NavHostController(
+                   context = LocalContext.current,
+               )
+) {
     var userInput by remember { mutableStateOf("") }
     val messages by viewModel.chatMessages.collectAsState()
     val listState = rememberLazyListState()
+    val activity = LocalActivity.current as? android.app.Activity
     var isFocused by remember { mutableStateOf(false) }
 
     Box(
@@ -39,6 +54,40 @@ fun ChatScreen(viewModel: ChatViewModel,
                 .padding(16.dp)
                 .background(Color.White)
         ) {
+            Row (
+                modifier = Modifier.fillMaxWidth()
+                    .padding(20.dp)
+
+            ){
+                CustomImageButton(
+                    drawableId = R.drawable.back,
+                    onClick = {
+
+                        navController.navigate(MainRouteScreen.HomeScreen.route)
+
+
+//                        navController.navigate(MainRouteScreen.HomeScreen.route) {
+//                            popUpTo(MainRouteScreen.HomeScreen.route) { inclusive = false }
+//                            launchSingleTop = true
+//                        }
+
+                    }
+                )
+
+
+                Spacer(
+                    modifier = Modifier.padding(start = 43.dp)
+                )
+                Text(
+                    text = "Talk to AI Adviser",
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    fontFamily = poppinsFamilyFont,
+                    color = Color(0xFF0077B6),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 25.sp
+                )
+
+            }
             LazyColumn(
                 state = listState,
                 modifier = Modifier.weight(1f)
@@ -90,7 +139,7 @@ fun ChatScreen(viewModel: ChatViewModel,
 
                 Box(
                     modifier = Modifier
-                        .width(271.dp)
+                        .width(261.dp)
                         .height(56.dp)
                         .border(
                             width = 0.87.dp,
@@ -153,7 +202,7 @@ fun ChatScreen(viewModel: ChatViewModel,
                 }
             }
 
-            Spacer(modifier = Modifier.padding(bottom = 80.dp))
+            Spacer(modifier = Modifier.padding(bottom = 10.dp))
         }
     }
 }
@@ -161,6 +210,10 @@ fun ChatScreen(viewModel: ChatViewModel,
 @Composable
 @Preview
 fun ChatScreenPreview() {
-    ChatScreen(viewModel = ChatViewModel(ChatRepository("YOUR_API_KEY")),
-        innerPadding = PaddingValues())
+    ChatScreen(
+        viewModel = ChatViewModel(ChatRepository()),
+        innerPadding = PaddingValues(),
+        navController = NavHostController(
+            context = LocalContext.current,
+        ))
 }

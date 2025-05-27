@@ -1,9 +1,10 @@
 package com.example.smartmed.chatBot
 
+import com.example.smartmed.BuildConfig
 import retrofit2.Response
 
-class ChatRepository(private val apiKey: String) {
-
+class ChatRepository() {
+    private val apiKey = BuildConfig.OPENAI_API_KEY
     suspend fun sendMessage(userMessage: String ): Response<ChatResponse> {
         val request = ChatRequest(
             messages = listOf(
