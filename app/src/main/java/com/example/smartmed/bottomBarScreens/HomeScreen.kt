@@ -57,7 +57,8 @@ fun HomeScreen(innerPadding: PaddingValues,
                healthTipsViewModel: HealthTipsViewModel
 ) {
 
-    val name = stringResource(id = R.string.name)
+    val defaultName = stringResource(id = R.string.name)
+    val name by profileSharedViewModel.profileName.collectAsState()
     var isLiked by remember { mutableStateOf(false) }
     val profileImageUri by profileSharedViewModel.profileImageUri.collectAsState()
 
@@ -109,7 +110,7 @@ fun HomeScreen(innerPadding: PaddingValues,
                         ),
                     )
                     Text(
-                        text = name,
+                        text = name ?: defaultName,
                         style = TextStyle(
                             fontSize = 14.sp, // Font size
                             fontWeight = FontWeight.Normal,
@@ -331,8 +332,11 @@ fun HealthTipCard(tip: HealthTip, viewModel: HealthTipsViewModel) {
 @Composable
 @Preview
 fun HomeScreenPreview() {
-    HomeScreen(innerPadding = PaddingValues(),
-               navController = rememberNavController(),
-               profileSharedViewModel = ProfileSharedViewModel(),
-                healthTipsViewModel = HealthTipsViewModel())
+    val shared = ProfileSharedViewModel().apply { setProfileName("Robin Hood") }
+    HomeScreen(
+        innerPadding = PaddingValues(),
+        navController = rememberNavController(),
+        profileSharedViewModel = shared,
+        healthTipsViewModel = HealthTipsViewModel()
+    )
 }

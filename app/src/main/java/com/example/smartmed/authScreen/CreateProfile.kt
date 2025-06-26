@@ -295,6 +295,7 @@ fun ProfileScreen(navController: NavController,
         Button(
             onClick = {
                 viewModel.saveUserProfile(fullName, phoneNumber, selectedDate, onSuccess = {}, onFailure = {} )
+                viewSharedModel.setProfileName(fullName)
 
                 navController.navigate(Graph.MainScreenGraph){
                 popUpTo(AuthRouteScreen.ProfileScreen.route){
