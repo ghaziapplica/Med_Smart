@@ -360,6 +360,9 @@ fun ProfileScreen(navController: NavController,
 
     }
 
+    fun testFunc() {
+
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
