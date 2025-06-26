@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -28,9 +27,9 @@ import com.example.smartmed.graphs.MainNavGraph
 @Composable
 fun MainScreen(
     rootNavHostController: NavHostController,
-    homeNavController : NavHostController = rememberNavController()
+    homeNavController : NavHostController = rememberNavController(),
+    profileSharedViewModel: ProfileSharedViewModel
 ) {
-    val profileSharedViewModel: ProfileSharedViewModel = viewModel()
     val navBackStackEntry by homeNavController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
@@ -119,6 +118,7 @@ fun RowScope.AddItem(
 fun MainScreenPreview() {
     MainScreen(
         rootNavHostController = rememberNavController(),
-        homeNavController = rememberNavController()
+        homeNavController = rememberNavController(),
+        profileSharedViewModel = ProfileSharedViewModel()
     )
 }
