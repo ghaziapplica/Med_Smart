@@ -26,7 +26,10 @@ fun  RootNavGraph(isAuth : Boolean) {
             profileSharedViewModel = profileSharedViewModel
             )
         composable(route = Graph.MainScreenGraph){
-            MainScreen(rootNavHostController = rootNavController)
+            MainScreen(
+                rootNavHostController = rootNavController,
+                profileSharedViewModel = profileSharedViewModel
+            )
         }
     }
 }
